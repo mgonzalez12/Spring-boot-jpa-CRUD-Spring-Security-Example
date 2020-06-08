@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="plantilla/template :: head">
+</head>
+<body>
+	<header th:replace="plantilla/template :: header"></header>
+	<div class="container">
+		<h1 th:text="${titulo}"></h1>
+		
+		<a th:href="@{/views/clientes/crear}" sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary"> Crear Cliente</a>
+
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">Nombres</th>
+					<th scope="col">Apellidos</th>
+					<th scope="col">Teléfono</th>
+					<th scope="col">Correo</th>
+					<th scope="col">Ciudad</th>
+					<th scope="col" >Editar</th>
+					<th scope="col" sec:authorize="hasRole('ROLE_ADMIN')" >Eliminar</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each=" cliente : ${clientes}">
+					<th th:text="${cliente.id}"></th>
+					<td th:text="${cliente.nombres}"></td>
+					<td th:text="${cliente.apellidos}"></td>
+					<td th:text="${cliente.telefono}"></td>
+					<td th:text="${cliente.email}"></td>
+					<td th:text="${cliente.ciudad.ciudad}"></td>
+					<td >
+						<a  class="btn btn-success btn-sm" 
+						   th:href="@{/views/clientes/edit/} + ${cliente.id}"
+						   th:text="'Editar'" title="Editar"></a>
+					</td>
+					<td sec:authorize="hasRole('ROLE_ADMIN')">
+						<a  class="btn btn-danger btn-sm"
+							th:href="@{/views/clientes/delete/} + ${cliente.id}"
+							th:text="'Eliminar'" title="Eliminar"
+							onClick="return confirm('Estas seguro de eliminar');"></a>
+					</td>
+				</tr>
+
+
+			</tbody>
+		</table>
+	
+	</div>
+	<footer th:replace="plantilla/template :: footer"></footer>
+</body>
+</html>
